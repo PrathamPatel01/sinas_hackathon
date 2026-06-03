@@ -1,0 +1,39 @@
+# Skills = curated decision knowledge, preloaded into agents' system prompts.
+# `content_file` is inlined into `content:` by scripts/build_config.py at apply time.
+
+skills:
+  - namespace: default
+    name: risk-tiers
+    description: How to classify an AI surface into one of the four EU AI Act risk tiers.
+    content_file: skills/risk-tiers.md
+    managed_by: config
+
+  - namespace: default
+    name: annex-iii
+    description: The eight Annex III high-risk use cases and the Article 6(3) carve-out.
+    content_file: skills/annex-iii.md
+    managed_by: config
+
+  - namespace: default
+    name: article-4
+    description: Article 4 AI-literacy obligation and how to build a role-based training plan.
+    content_file: skills/article-4.md
+    managed_by: config
+
+  - namespace: default
+    name: oversight-logging
+    description: How to draft a Human Oversight & Logging Policy from a classified inventory.
+    content_file: skills/oversight-logging.md
+    managed_by: config
+
+  - namespace: default
+    name: timeline
+    description: The staggered EU AI Act application dates and how to frame urgency.
+    content_file: skills/timeline.md
+    managed_by: config
+
+  - namespace: default
+    name: common-sme-tools
+    description: Fast-path map of common SME AI tools to their likely risk tier.
+    content_file: skills/common-sme-tools.md
+    managed_by: config

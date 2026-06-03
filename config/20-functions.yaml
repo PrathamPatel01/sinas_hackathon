@@ -1,0 +1,118 @@
+# Python functions. `code_file` is inlined into `code:` by scripts/build_config.py.
+# Functions run in sandboxed containers; handler(input_data, context) is the entry point.
+
+functions:
+  - namespace: default
+    name: save_inventory
+    runtime: python
+    description: Persist the company profile and classified AI-surface inventory to state.
+    code_file: functions/save_inventory.py
+    input_schema:
+      type: object
+      required: [session_key]
+      properties:
+        session_key: { type: string }
+        company:
+          type: object
+          properties:
+            name: { type: string }
+            size: { type: string }
+            sector: { type: string }
+        surfaces:
+          type: array
+          items: { type: object }
+    output_schema:
+      type: object
+      properties:
+        status: { type: string }
+        session_key: { type: string }
+        surface_count: { type: integer }
+    managed_by: config
+
+  - namespace: default
+    name: get_inventory
+    runtime: python
+    description: Read back a previously saved company profile and inventory by session.
+    code_file: functions/get_inventory.py
+    input_schema:
+      type: object
+      required: [session_key]
+      properties:
+        session_key: { type: string }
+    output_schema:
+      type: object
+      properties:
+        found: { type: boolean }
+        company: { type: object }
+        surfaces: { type: array }
+    managed_by: config
+
+  - namespace: default
+    name: moonlit_evidence
+    runtime: python
+    shared_pool: true          # trusted pool → can read context['secrets']['MOONLIT_KEY']
+    description: >
+      Ground EU AI Act citations in verbatim Official-Journal text from the live Moonlit
+      Legal Research API. Input: a list of citation references. Returns the exact source
+      passage + a Moonlit link for each.
+    code_file: functions/moonlit_evidence.py
+    input_schema:
+      type: object
+      required: [citations]
+      properties:
+        citations: { type: array, items: { type: string } }
+        key: { type: string }
+    output_schema:
+      type: object
+      properties:
+        evidence: { type: array, items: { type: object } }
+        grounded: { type: integer }
+        total: { type: integer }
+    managed_by: config
+
+  - namespace: default
+    name: moonlit_national
+    runtime: python
+    shared_pool: true          # reads MOONLIT_KEY from context['secrets']
+    description: >
+      Surface relevant Dutch national guidance (AP / ACM / human-rights) for the classified
+      AI profile, from the live Moonlit Legal Research API. Input: the classified surfaces.
+    code_file: functions/moonlit_national.py
+    input_schema:
+      type: object
+      required: [surfaces]
+      properties:
+        surfaces: { type: array, items: { type: object } }
+        key: { type: string }
+    output_schema:
+      type: object
+      properties:
+        national: { type: array, items: { type: object } }
+    managed_by: config
+
+  - namespace: default
+    name: generate_pack
+    runtime: python
+    description: >
+      Assemble the final compliance pack (inventory, classification with citations,
+      action checklist, oversight policy, training plan), upload it to the default/packs
+      collection, and return the rendered markdown plus a deadline countdown.
+    code_file: functions/generate_pack.py
+    input_schema:
+      type: object
+      required: [surfaces]
+      properties:
+        session_key: { type: string }
+        company: { type: object }
+        surfaces: { type: array, items: { type: object } }
+        evidence: { type: array, items: { type: object } }
+        policy_markdown: { type: string }
+        training_markdown: { type: string }
+    output_schema:
+      type: object
+      properties:
+        filename: { type: string }
+        days_to_deadline: { type: integer }
+        counts: { type: object }
+        pack_markdown: { type: string }
+    managed_by: config

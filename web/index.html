@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI Act Co-Pilot · Multi-Agent Pipeline</title>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+  :root{
+    --bg:#0b0f17; --panel:#121826; --panel2:#0e1420; --line:#1f2937;
+    --txt:#e6edf3; --dim:#8b98a9; --accent:#5b9dff; --green:#36d399; --amber:#fbbd23; --red:#f87272;
+    --hi:#f87272; --lim:#fbbd23; --min:#36d399; --pro:#a78bfa;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--txt)}
+  header{padding:18px 26px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px}
+  header .logo{font-size:22px}
+  header h1{font-size:17px;margin:0;font-weight:650}
+  header .sub{color:var(--dim);font-size:12.5px;margin-top:2px}
+  header .timer{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--dim);font-size:13px}
+  .wrap{display:grid;grid-template-columns:420px 1fr;gap:0;height:calc(100vh - 63px)}
+  .left{border-right:1px solid var(--line);padding:20px;overflow:auto}
+  .right{padding:0;overflow:hidden;display:flex;flex-direction:column}
+  .right-top{flex:1;overflow:auto;padding:22px 26px;min-height:0}
+  .chat{border-top:1px solid var(--line);background:var(--panel2);display:flex;flex-direction:column;height:46%;min-height:230px}
+  .chat-head{padding:9px 14px;font-size:12.5px;font-weight:650;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px}
+  .chat-head .sub{color:var(--dim);font-weight:400;font-size:11px}
+  .chat-msgs{flex:1;overflow:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+  .chat-empty{color:var(--dim);font-size:12.5px;text-align:center;margin:auto;max-width:340px}
+  .chat-empty .q{display:block;margin:6px auto 0;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 9px;cursor:pointer;font-size:12px}
+  .chat-empty .q:hover{border-color:var(--accent);color:var(--txt)}
+  .bubble{max-width:88%;padding:9px 12px;border-radius:12px;font-size:13px;line-height:1.5}
+  .bubble.u{align-self:flex-end;background:var(--accent);color:#06101f;font-weight:500;border-bottom-right-radius:4px}
+  .bubble.a{align-self:flex-start;background:var(--panel);border:1px solid var(--line);border-bottom-left-radius:4px}
+  .bubble.a.thinking{color:var(--dim);font-style:italic}
+  .bubble .src{margin-top:7px;display:flex;flex-direction:column;gap:4px}
+  .bubble .src a{font-size:11px;color:var(--accent);text-decoration:none}
+  .bubble .src a:before{content:"📖 "}
+  .chat-input{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--line)}
+  .chat-input input{flex:1}
+  .chat-input button{padding:9px 14px}
+  textarea,input[type=text],#fuInput{width:100%;background:var(--panel2);color:var(--txt);border:1px solid var(--line);
+    border-radius:10px;padding:11px 12px;font:13px/1.5 inherit;resize:vertical}
+  textarea{min-height:90px}
+  #fuInput:focus{outline:none;border-color:var(--accent)}
+  .badge.new{background:rgba(91,157,255,.18);color:var(--accent);border:1px solid var(--accent)}
+  .row{display:flex;gap:10px;margin-top:10px}
+  button{background:var(--accent);color:#06101f;border:0;border-radius:9px;padding:10px 16px;font-weight:650;cursor:pointer;font-size:13.5px}
+  button:disabled{opacity:.5;cursor:not-allowed}
+  button.ghost{background:transparent;color:var(--dim);border:1px solid var(--line)}
+  .examples{margin-top:10px;display:flex;flex-direction:column;gap:6px}
+  .examples .ex{font-size:12px;color:var(--dim);background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:7px 9px;cursor:pointer}
+  .examples .ex:hover{border-color:var(--accent);color:var(--txt)}
+
+  .pipeline{margin-top:22px}
+  .pl-title{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:0 0 12px}
+  .node{display:flex;gap:11px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);
+    border-radius:11px;padding:11px 13px;margin-bottom:9px;position:relative;transition:border-color .2s,box-shadow .2s}
+  .node.running{border-color:var(--amber);box-shadow:0 0 0 1px var(--amber),0 0 24px -8px var(--amber)}
+  .node.done{border-color:#1f3b2e}
+  .node .ic{font-size:18px;width:24px;text-align:center;flex:none}
+  .node .body{flex:1;min-width:0}
+  .node .nm{font-weight:600}
+  .node .kind{font-size:10.5px;color:var(--dim);border:1px solid var(--line);border-radius:5px;padding:0 5px;margin-left:6px;vertical-align:middle}
+  .node .dt{color:var(--dim);font-size:12px;margin-top:3px;min-height:16px}
+  .node .st{flex:none;display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--dim);font-variant-numeric:tabular-nums}
+  .dot{width:9px;height:9px;border-radius:50%;background:#37414f;flex:none}
+  .running .dot{background:var(--amber);animation:pulse 1s infinite}
+  .done .dot{background:var(--green)}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.7)}}
+  .spinner{width:13px;height:13px;border:2px solid #2a3543;border-top-color:var(--amber);border-radius:50%;animation:spin .7s linear infinite;display:none}
+  .running .spinner{display:inline-block}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .check{display:none;color:var(--green);font-weight:700}
+  .done .check{display:inline}
+  .parallel{border-left:2px dashed var(--line);margin-left:11px;padding-left:14px}
+  .parallel .plabel{font-size:10.5px;color:var(--dim);margin:2px 0 8px}
+  .connector{height:12px;margin-left:23px;border-left:2px solid var(--line)}
+
+  .log{margin-top:18px;background:#070b12;border:1px solid var(--line);border-radius:10px;padding:10px 12px;
+    font:11.5px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace;color:#9fb0c3;max-height:170px;overflow:auto}
+  .log .t{color:#516074}
+  .log .ok{color:var(--green)} .log .run{color:var(--amber)} .log .er{color:var(--red)}
+
+  .result-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:8px}
+  .result-head h2{font-size:16px;margin:0}
+  .pill{font-size:11.5px;border-radius:999px;padding:3px 10px;border:1px solid var(--line);color:var(--dim)}
+  .pill b{color:var(--txt)}
+  .toolbtn{background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:6px 11px;font-size:12px;font-weight:600;cursor:pointer}
+  .toolbtn:hover{border-color:var(--accent);color:var(--accent)}
+  .pill.hi{border-color:var(--hi);color:var(--hi)} .pill.lim{border-color:var(--lim);color:var(--lim)}
+  .pill.min{border-color:var(--min);color:var(--min)} .pill.gr{border-color:var(--green);color:var(--green)}
+  .placeholder{color:var(--dim);text-align:center;margin-top:18vh}
+  .placeholder .big{font-size:34px;margin-bottom:8px}
+  .doc{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px 26px;max-width:900px}
+  .doc h1{font-size:22px;border-bottom:1px solid var(--line);padding-bottom:8px}
+  .doc h2{font-size:17px;margin-top:26px;color:#cdd9e5}
+  .doc h3{font-size:14.5px;margin-top:18px}
+  .doc table{border-collapse:collapse;width:100%;margin:10px 0;font-size:12.5px}
+  .doc th,.doc td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+  .doc th{background:var(--panel2)}
+  .doc blockquote{border-left:3px solid var(--accent);margin:8px 0;padding:4px 12px;color:#b9c6d4;background:var(--panel2);border-radius:0 6px 6px 0;font-style:italic}
+  .doc a{color:var(--accent)}
+  .doc code{background:var(--panel2);padding:1px 5px;border-radius:4px}
+  .doc li{margin:2px 0}
+
+  .node{cursor:pointer}
+  .node.sel{outline:2px solid var(--accent);outline-offset:1px}
+  .tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+  .tabs button{background:var(--panel2);color:var(--dim);border:1px solid var(--line);border-radius:8px;
+    padding:7px 12px;font-size:12.5px;font-weight:600;cursor:pointer}
+  .tabs button:disabled{opacity:.4;cursor:not-allowed}
+  .tabs button.active{background:var(--accent);color:#06101f;border-color:var(--accent)}
+  .tabs button.ready:not(.active){border-color:#2c3a4e;color:var(--txt)}
+
+  .badge{font-size:11px;font-weight:700;border-radius:6px;padding:2px 8px;white-space:nowrap}
+  .b-high{background:rgba(248,114,114,.15);color:var(--hi);border:1px solid var(--hi)}
+  .b-limited{background:rgba(251,189,35,.13);color:var(--lim);border:1px solid var(--lim)}
+  .b-minimal{background:rgba(54,211,153,.13);color:var(--min);border:1px solid var(--min)}
+  .b-prohibited{background:rgba(167,139,250,.15);color:var(--pro);border:1px solid var(--pro)}
+  .surface{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:14px 16px;margin-bottom:11px}
+  .surface.high{border-left:3px solid var(--hi)} .surface.limited{border-left:3px solid var(--lim)}
+  .surface.minimal{border-left:3px solid var(--min)} .surface.prohibited{border-left:3px solid var(--pro)}
+  .surface .sh{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  .surface .sh .nm{font-weight:650;font-size:14.5px}
+  .surface .use{color:var(--dim);font-size:12.5px;margin-bottom:8px}
+  .surface .meta{font-size:12.5px;margin:3px 0}
+  .surface .meta b{color:#cdd9e5}
+  .surface ul{margin:5px 0 0;padding-left:18px}
+  .ev{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 15px;margin-bottom:10px}
+  .ev .ref{font-weight:650;font-size:13px;margin-bottom:5px}
+  .ev .ref a{color:var(--accent)}
+  .ev .miss{color:var(--dim);font-style:italic;font-size:12.5px}
+
+  /* inline citation chips with hover/click evidence */
+  .cite{color:var(--accent);border-bottom:1px dotted var(--accent);cursor:pointer;font-weight:600}
+  .cite:hover{background:rgba(91,157,255,.12);border-radius:3px}
+  .cite.nl{color:var(--amber);border-bottom-color:var(--amber)}
+  .cite.nl:hover{background:rgba(251,189,35,.13)}
+  .cite-tip{position:fixed;z-index:50;max-width:380px;background:#0a0f18;border:1px solid var(--accent);
+    border-radius:9px;padding:10px 12px;font-size:12px;line-height:1.5;color:#cdd9e5;box-shadow:0 10px 30px -8px #000;
+    pointer-events:none;display:none}
+  .cite-tip .ttl{color:var(--accent);font-weight:700;font-size:11.5px;margin-bottom:4px}
+  .cite-tip .hint{color:var(--dim);font-size:10.5px;margin-top:6px}
+  .backdrop{position:fixed;inset:0;background:rgba(2,6,12,.55);z-index:60;display:none}
+  .cite-pop{position:fixed;z-index:70;width:min(560px,92vw);max-height:70vh;overflow:auto;background:var(--panel);
+    border:1px solid var(--accent);border-radius:12px;padding:18px 20px;box-shadow:0 24px 60px -10px #000;display:none}
+  .cite-pop h4{margin:0 0 4px;font-size:14px}
+  .cite-pop .src{font-size:11.5px;color:var(--dim);margin-bottom:10px}
+  .cite-pop blockquote{border-left:3px solid var(--accent);margin:0 0 12px;padding:8px 14px;background:var(--panel2);
+    border-radius:0 8px 8px 0;font-style:italic;color:#dbe5ef;font-size:13px;line-height:1.6}
+  .cite-pop a{color:var(--accent);font-size:12.5px;font-weight:600}
+  .cite-pop .x{position:absolute;top:12px;right:14px;cursor:pointer;color:var(--dim);font-size:18px;line-height:1}
+  .cite-pop .miss{color:var(--dim);font-style:italic}
+</style>
+</head>
+<body>
+<header>
+  <span class="logo">⚖️</span>
+  <div>
+    <h1>EU AI Act Compliance Co-Pilot</h1>
+    <div class="sub">Multi-agent pipeline on Sinas · citations grounded in verbatim law via Moonlit</div>
+  </div>
+  <div class="timer" id="timer"></div>
+</header>
+
+<div class="wrap">
+  <div class="left">
+    <label class="pl-title">Company description</label>
+    <textarea id="msg">We are a 60-person Amsterdam recruitment agency. We use ChatGPT Team for internal drafting, a CV-screening tool called HireScan that ranks job applicants, a website chatbot for customer questions, and HubSpot AI for marketing emails.</textarea>
+    <div class="row">
+      <button id="run">▶  Run pipeline</button>
+      <button id="reset" class="ghost">Reset</button>
+    </div>
+    <div id="followup" style="display:none;margin-top:11px">
+      <div class="pl-title">Follow-up — what if the company changes?</div>
+      <input id="fuInput" placeholder="e.g. we also started using an AI proctoring tool for exams" />
+      <button id="fuBtn" style="margin-top:8px;width:100%">↻  Re-assess with this change</button>
+    </div>
+    <div class="examples" id="examples"></div>
+
+    <div class="pipeline">
+      <div class="pl-title">Agent pipeline</div>
+      <div class="parallel">
+        <div class="plabel">① run in parallel — classify & fetch the law</div>
+        <div id="n-classifier" class="node">
+          <div class="ic">🛡️</div>
+          <div class="body"><div class="nm">Classifier<span class="kind">Sinas agent</span></div><div class="dt" id="d-classifier">Inventories AI surfaces & classifies each against the Act</div></div>
+          <div class="st"><span id="t-classifier"></span><span class="spinner"></span><span class="check">✓</span><span class="dot"></span></div>
+        </div>
+        <div id="n-evidence" class="node">
+          <div class="ic">📖</div>
+          <div class="body"><div class="nm">Moonlit Evidence<span class="kind">live legal API</span></div><div class="dt" id="d-evidence">Fetches the AI Act, then grounds each citation in verbatim text</div></div>
+          <div class="st"><span id="t-evidence"></span><span class="spinner"></span><span class="check">✓</span><span class="dot"></span></div>
+        </div>
+      </div>
+      <div class="connector"></div>
+      <div class="parallel">
+        <div class="plabel">② ground in national law — feeds the drafts below</div>
+        <div id="n-dutch" class="node">
+          <div class="ic">🇳🇱</div>
+          <div class="body"><div class="nm">Dutch Law<span class="kind">live legal API</span></div><div class="dt" id="d-dutch">Finds relevant AP / ACM national guidance via Moonlit</div></div>
+          <div class="st"><span id="t-dutch"></span><span class="spinner"></span><span class="check">✓</span><span class="dot"></span></div>
+        </div>
+      </div>
+      <div class="connector"></div>
+      <div class="parallel">
+        <div class="plabel">③ run in parallel — draft from classification + Dutch guidance</div>
+        <div id="n-policy" class="node">
+          <div class="ic">📄</div>
+          <div class="body"><div class="nm">Policy Drafter<span class="kind">Sinas agent</span></div><div class="dt" id="d-policy">Drafts the oversight policy, citing AP guidance</div></div>
+          <div class="st"><span id="t-policy"></span><span class="spinner"></span><span class="check">✓</span><span class="dot"></span></div>
+        </div>
+        <div id="n-training" class="node">
+          <div class="ic">🎓</div>
+          <div class="body"><div class="nm">Training Architect<span class="kind">Sinas agent</span></div><div class="dt" id="d-training">Builds the Article 4 AI-literacy plan</div></div>
+          <div class="st"><span id="t-training"></span><span class="spinner"></span><span class="check">✓</span><span class="dot"></span></div>
+        </div>
+      </div>
+      <div class="connector"></div>
+      <div id="n-generate_pack" class="node">
+        <div class="ic">🧩</div>
+        <div class="body"><div class="nm">Generate Pack<span class="kind">function</span></div><div class="dt" id="d-generate_pack">Assembles the final compliance pack</div></div>
+        <div class="st"><span id="t-generate_pack"></span><span class="spinner"></span><span class="check">✓</span><span class="dot"></span></div>
+      </div>
+    </div>
+
+    <div class="log" id="log"></div>
+  </div>
+
+  <div class="right" id="right">
+   <div class="right-top">
+    <div class="tabs" id="tabs">
+      <button data-id="classifier" disabled>🛡️ Classifier</button>
+      <button data-id="evidence" disabled>📖 Evidence</button>
+      <button data-id="policy" disabled>📄 Policy</button>
+      <button data-id="training" disabled>🎓 Training</button>
+      <button data-id="dutch" disabled>🇳🇱 Dutch Law</button>
+      <button data-id="generate_pack" disabled>🧩 Full Pack</button>
+    </div>
+    <div class="result-head" id="summaryBar" style="display:none">
+      <h2 id="r-title">Compliance Pack</h2>
+      <span class="pill hi" id="p-hi"></span>
+      <span class="pill lim" id="p-lim"></span>
+      <span class="pill min" id="p-min"></span>
+      <span class="pill gr" id="p-gr"></span>
+      <span style="flex:1"></span>
+      <button class="toolbtn" id="dlMd" title="Download the pack as Markdown">⬇ Markdown</button>
+      <button class="toolbtn" id="dlPdf" title="Open a printable view / Save as PDF">🖨 PDF</button>
+    </div>
+    <div class="placeholder" id="placeholder">
+      <div class="big">📋</div>
+      <div>Run the pipeline, then click any agent to inspect its output.</div>
+      <div style="font-size:12px;margin-top:6px">Each agent's result appears live as it finishes.</div>
+    </div>
+    <div class="doc" id="view" style="display:none"></div>
+   </div>
+   <div class="chat">
+     <div class="chat-head">💬 Ask about this pack <span class="sub">— grounded by Moonlit, no full re-run</span></div>
+     <div class="chat-msgs" id="chatMsgs">
+       <div class="chat-empty" id="chatEmpty">
+         Ask anything about the assessment or the EU AI Act.
+         <span class="q">Why is HireScan high-risk?</span>
+         <span class="q">What exactly must the human overseer do?</span>
+         <span class="q">Do we need to tell candidates we use AI?</span>
+       </div>
+     </div>
+     <div class="chat-input">
+       <input id="chatQ" type="text" placeholder="Ask a question…" />
+       <button id="chatSend">Ask</button>
+     </div>
+   </div>
+  </div>
+</div>
+
+<div class="cite-tip" id="citeTip"></div>
+<div class="backdrop" id="backdrop"></div>
+<div class="cite-pop" id="citePop"></div>
+
+<script>
+const NODES = ["classifier","evidence","policy","training","dutch","generate_pack"];
+const TITLES = {classifier:"Classifier — AI surfaces & risk tiers",evidence:"Moonlit Evidence — verbatim source passages",
+  policy:"Policy Drafter — Human Oversight & Logging Policy",training:"Training Architect — Article 4 plan",
+  dutch:"Dutch Law — national guidance (AP / ACM) via Moonlit",generate_pack:"Full Compliance Pack"};
+const TIER_LABEL={high:"🔴 HIGH RISK",limited:"🟡 LIMITED",minimal:"🟢 MINIMAL",prohibited:"🛑 PROHIBITED"};
+const EXAMPLES = [
+  "We are a 40-person Dutch fintech. We use an AI credit-scoring model to assess loan applicants, a support chatbot, and Copilot for our developers.",
+  "We run a 200-person logistics company using AI route optimisation, an HR tool that ranks internal candidates for promotion, and ChatGPT for email.",
+  "We are a 25-person online education startup using AI proctoring during exams and an AI grader for student assignments."
+];
+let evt=null, t0=0, timerInt=null;
+let outputs={}, selected=null, userPicked=false;
+let evidenceMap={};   // reference -> {passage,url,in_source}
+let currentMessage="", isFollowup=false, prevSurfaceNames=[];   // follow-up state
+let nationalMap={};   // lowercased Dutch-doc anchor -> {title,authority,year,url,passage}
+
+const $=id=>document.getElementById(id);
+const esc=s=>(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;");
+function fmt(ms){return (ms/1000).toFixed(1)+"s";}
+function md(s){return window.marked?marked.parse(s||""):"<pre>"+esc(s)+"</pre>";}
+function logline(cls,txt){const l=$("log");const ts=new Date().toLocaleTimeString();
+  l.innerHTML+=`<span class="t">${ts}</span> <span class="${cls}">${txt}</span>\n`;l.scrollTop=l.scrollHeight;}
+
+function setNode(id,status,ms,detail){
+  const n=$("n-"+id); if(!n)return; n.classList.remove("running","done"); n.classList.add(status);
+  if(ms!=null) $("t-"+id).textContent=fmt(ms);
+  if(detail) $("d-"+id).textContent=detail;
+}
+
+function renderSurfaces(o){
+  const order={prohibited:0,high:1,limited:2,minimal:3};
+  const ss=[...o.surfaces].sort((a,b)=>(order[a.risk_tier]??9)-(order[b.risk_tier]??9));
+  return ss.map(s=>{
+    const t=s.risk_tier||"minimal";
+    const ob=(s.obligations||[]).map(x=>`<li>${esc(x)}</li>`).join("");
+    return `<div class="surface ${t}">
+      <div class="sh"><span class="badge b-${t}">${TIER_LABEL[t]||t}</span><span class="nm">${esc(s.name)}</span>${(isFollowup&&!prevSurfaceNames.includes(s.name))?'<span class="badge new">✦ NEW</span>':''}</div>
+      <div class="use">${esc(s.use)}</div>
+      ${s.annex_iii_category?`<div class="meta"><b>Annex III:</b> ${esc(s.annex_iii_category)}</div>`:""}
+      <div class="meta"><b>Why:</b> ${esc(s.justification)}</div>
+      <div class="meta"><b>Citations:</b> ${(s.citations||[]).map(c=>`<span class="cite" data-ref="${esc(c)}">${esc(c)}</span>`).join(" ")||"—"}</div>
+      ${ob?`<div class="meta"><b>Obligations:</b><ul>${ob}</ul></div>`:""}
+    </div>`;
+  }).join("");
+}
+function renderEvidence(o){
+  return (o.evidence||[]).map(e=>{
+    const ref=e.url?`<a href="${e.url}" target="_blank">${esc(e.reference)}</a>`:esc(e.reference);
+    return `<div class="ev"><div class="ref">${ref}</div>`+
+      (e.passage?`<blockquote>${esc(e.passage)}</blockquote>`:`<div class="miss">— not found in source corpus —</div>`)+`</div>`;
+  }).join("");
+}
+function renderNational(o){
+  if(!o.national||!o.national.length) return '<p style="color:var(--dim)">No national sources found.</p>';
+  return `<p style="color:var(--dim);font-size:12.5px">Beyond the EU AI Act, Dutch supervisory guidance applies — the AP and ACM are the national authorities. Click any source for its verbatim text (live from Moonlit):</p>`+
+    o.national.map(d=>{
+      const a=(d.anchors&&d.anchors[0]||d.title).toLowerCase();
+      return `<div class="ev"><div class="ref">🇳🇱 <span class="cite nl" data-nl="${esc(a)}">${esc(d.title)}</span></div>`+
+        `<div style="color:var(--dim);font-size:12px">${esc(d.authority)}${d.year?" · "+d.year:""} · <a href="${d.url}" target="_blank">source ↗</a></div></div>`;
+    }).join("");
+}
+// Wrap Dutch citations in rendered prose as clickable chips: the fixed [NL-n] tags
+// the drafter was told to use (reliable), plus any literal doc-title anchors it wrote.
+function linkifyNational(root){
+  const keys=Object.keys(nationalMap); if(!keys.length) return;
+  const anchors=keys.filter(k=>!/^nl-\d+$/.test(k)).sort((a,b)=>b.length-a.length)
+    .map(a=>a.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"));
+  const pat="\\[NL-\\d+\\]"+(anchors.length?"|"+anchors.join("|"):"");
+  const RE=()=>new RegExp("("+pat+")","gi");
+  const skip=n=>!n.parentElement||n.parentElement.closest("a,code,pre,.cite,h1");
+  const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null);
+  const targets=[]; while(walker.nextNode()){const n=walker.currentNode; if(!skip(n)&&RE().test(n.nodeValue)) targets.push(n);}
+  targets.forEach(n=>{
+    const re=RE(), s=n.nodeValue, frag=document.createDocumentFragment(); let last=0,m;
+    while((m=re.exec(s))){
+      if(m.index>last) frag.appendChild(document.createTextNode(s.slice(last,m.index)));
+      let key, display;
+      if(/^\[NL-\d+\]$/i.test(m[0])){ key=m[0].replace(/[\[\]]/g,"").toLowerCase(); display=(nationalMap[key]&&nationalMap[key].short)||m[0]; }
+      else { key=m[0].toLowerCase(); display=m[0]; }
+      const sp=document.createElement("span"); sp.className="cite nl"; sp.dataset.nl=key; sp.textContent="🇳🇱 "+display;
+      frag.appendChild(sp); last=m.index+m[0].length;
+    }
+    if(last<s.length) frag.appendChild(document.createTextNode(s.slice(last)));
+    n.parentNode.replaceChild(frag,n);
+  });
+}
+function showOutput(id){
+  const o=outputs[id]; if(!o)return;
+  selected=id;
+  document.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("active",b.dataset.id===id));
+  NODES.forEach(n=>$("n-"+n).classList.toggle("sel",n===id));
+  $("placeholder").style.display="none"; $("view").style.display="block";
+  if(o.kind==="surfaces") $("view").innerHTML=`<h2>${TITLES[id]}</h2>`+renderSurfaces(o);
+  else if(o.kind==="evidence") $("view").innerHTML=`<h2>${TITLES[id]}</h2>`+renderEvidence(o);
+  else if(o.kind==="national") $("view").innerHTML=`<h2>${TITLES[id]}</h2>`+renderNational(o);
+  else { $("view").innerHTML=md(o.markdown); linkifyCitations($("view")); linkifyNational($("view")); }
+}
+
+// Turn AI Act citation references in rendered markdown into interactive evidence chips.
+function linkifyCitations(root){
+  const RE=()=>/\b(Annex\s+[IVX]+(?:\s*[,§]?\s*\d+)?(?:\([a-z0-9]+\))?|Article\s+\d+(?:\(\d+\))?(?:\([a-z]\))?)/g;
+  const skip=n=>!n.parentElement || n.parentElement.closest("a,code,pre,blockquote,.cite,h1");
+  const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null);
+  const targets=[];
+  while(walker.nextNode()){const n=walker.currentNode; if(!skip(n)&&RE().test(n.nodeValue)) targets.push(n);}
+  targets.forEach(n=>{
+    const re=RE(), s=n.nodeValue, frag=document.createDocumentFragment(); let last=0,m;
+    while((m=re.exec(s))){
+      if(m.index>last) frag.appendChild(document.createTextNode(s.slice(last,m.index)));
+      const sp=document.createElement("span"); sp.className="cite"; sp.dataset.ref=m[0]; sp.textContent=m[0];
+      frag.appendChild(sp); last=m.index+m[0].length;
+    }
+    if(last<s.length) frag.appendChild(document.createTextNode(s.slice(last)));
+    n.parentNode.replaceChild(frag,n);
+  });
+}
+
+function reset(){
+  if(evt){evt.close();evt=null;} clearInterval(timerInt);
+  NODES.forEach(id=>{const n=$("n-"+id);n.classList.remove("running","done","sel");$("t-"+id).textContent="";});
+  document.querySelectorAll(".tabs button").forEach(b=>{b.disabled=true;b.classList.remove("active","ready");});
+  $("log").innerHTML=""; $("view").style.display="none"; $("view").innerHTML=""; $("placeholder").style.display="block";
+  $("summaryBar").style.display="none"; $("timer").textContent=""; $("run").disabled=false;
+  outputs={}; selected=null; userPicked=false; evidenceMap={}; nationalMap={};
+}
+function startTimer(){t0=Date.now();timerInt=setInterval(()=>{$("timer").textContent="⏱ "+fmt(Date.now()-t0);},100);}
+
+function run(){
+  reset(); $("run").disabled=true; $("fuBtn").disabled=true; startTimer();
+  logline("run", isFollowup ? "↻ re-assessing with the change…" : "▶ pipeline started");
+  evt=new EventSource("/run?message="+encodeURIComponent(currentMessage));
+  evt.addEventListener("step",e=>{const d=JSON.parse(e.data);
+    setNode(d.id,d.status,d.ms,d.detail);
+    logline(d.status==="running"?"run":"ok",(d.status==="running"?"▶ ":"✓ ")+d.id+(d.ms?" ("+fmt(d.ms)+")":"")+(d.detail?" — "+d.detail:""));
+  });
+  evt.addEventListener("output",e=>{const d=JSON.parse(e.data);
+    outputs[d.id]=d;
+    if(d.id==="evidence"){(d.evidence||[]).forEach(x=>{evidenceMap[x.reference]={passage:x.passage,url:x.url,in_source:x.in_source};});}
+    if(d.id==="dutch"){(d.national||[]).forEach(x=>{
+      const rec={title:x.title,authority:x.authority,year:x.year,url:x.url,passage:x.passage,short:x.short};
+      if(x.tag) nationalMap[x.tag.toLowerCase()]=rec;
+      (x.anchors||[]).forEach(a=>{nationalMap[a.toLowerCase()]=rec;});
+    });}
+    const tab=document.querySelector(`.tabs button[data-id="${d.id}"]`); tab.disabled=false; tab.classList.add("ready");
+    if(!userPicked) showOutput(d.id);   // auto-reveal each output live until the user clicks
+  });
+  evt.addEventListener("summary",e=>{const d=JSON.parse(e.data);
+    $("summaryBar").style.display="flex";
+    $("r-title").textContent="Pack — "+(d.company||"");
+    $("p-hi").innerHTML="<b>"+d.counts.high+"</b> high-risk";
+    $("p-lim").innerHTML="<b>"+d.counts.limited+"</b> limited";
+    $("p-min").innerHTML="<b>"+d.counts.minimal+"</b> minimal";
+    $("p-gr").innerHTML="<b>"+d.grounded+"/"+d.total_citations+"</b> grounded (Moonlit)";
+  });
+  evt.addEventListener("done",e=>{const d=JSON.parse(e.data);clearInterval(timerInt);
+    $("timer").textContent="✓ done in "+fmt(d.total_ms); logline("ok","✓ complete in "+fmt(d.total_ms));
+    $("run").disabled=false; $("fuBtn").disabled=false; $("followup").style.display="block"; evt.close();});
+  evt.addEventListener("error",e=>{let m="stream error";try{m=JSON.parse(e.data).message;}catch(_){}
+    logline("er","✗ "+m); clearInterval(timerInt); $("run").disabled=false; if(evt)evt.close();});
+}
+
+$("run").onclick=()=>{ currentMessage=$("msg").value; isFollowup=false; prevSurfaceNames=[]; run(); };
+$("reset").onclick=()=>{ isFollowup=false; prevSurfaceNames=[]; $("followup").style.display="none"; reset(); };
+$("fuBtn").onclick=()=>{
+  const fu=$("fuInput").value.trim(); if(!fu) return;
+  prevSurfaceNames=((outputs.classifier||{}).surfaces||[]).map(s=>s.name);
+  isFollowup=true;
+  currentMessage = currentMessage + " Additionally, the company now also uses: " + fu + ".";
+  $("msg").value=currentMessage; $("fuInput").value="";
+  run();
+};
+// click a pipeline node → show its output
+NODES.forEach(id=>$("n-"+id).addEventListener("click",()=>{if(outputs[id]){userPicked=true;showOutput(id);}}));
+// click a tab → show its output
+document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",()=>{if(outputs[b.dataset.id]){userPicked=true;showOutput(b.dataset.id);}}));
+const exWrap=$("examples");
+EXAMPLES.forEach(x=>{const d=document.createElement("div");d.className="ex";d.textContent="› "+x.slice(0,70)+"…";
+  d.onclick=()=>{$("msg").value=x;};exWrap.appendChild(d);});
+
+// ── inline citation evidence: hover tooltip + click popup ──
+const tip=$("citeTip"), pop=$("citePop"), backdrop=$("backdrop");
+function citeData(ref){
+  if(evidenceMap[ref]) return evidenceMap[ref];
+  for(const k in evidenceMap){ if(k.includes(ref)||ref.includes(k)) return evidenceMap[k]; }
+  return null;
+}
+function lookupNL(k){ if(nationalMap[k])return nationalMap[k];
+  for(const a in nationalMap){ if(a.includes(k)||k.includes(a)) return nationalMap[a]; } return null; }
+// Unified info for any citation chip — EU AI Act (data-ref) or Dutch (data-nl).
+function chipInfo(c){
+  if(c.dataset.nl!==undefined){
+    const d=lookupNL(c.dataset.nl);
+    return d ? {head:d.title, src:(d.authority||"")+(d.year?" · "+d.year:"")+" · via Moonlit Legal Research", passage:d.passage, url:d.url, link:"Open the source in Moonlit ↗"}
+             : {head:c.textContent, src:"Netherlands · via Moonlit", passage:null, url:null};
+  }
+  const d=citeData(c.dataset.ref);
+  return {head:c.dataset.ref, src:"EU AI Act · Regulation (EU) 2024/1689 · via Moonlit Legal Research",
+          passage:d&&d.passage, url:d&&d.url, link:"Open the full Article in Moonlit ↗"};
+}
+document.addEventListener("mouseover",e=>{const c=e.target.closest&&e.target.closest(".cite"); if(!c)return;
+  const info=chipInfo(c); const r=c.getBoundingClientRect();
+  tip.innerHTML=`<div class="ttl">${esc(info.head)}</div>`+
+    (info.passage ? esc(info.passage.slice(0,260))+(info.passage.length>260?" …":"")+`<div class="hint">click for full text + source ↗</div>`
+                  : `<span style="color:var(--dim)">click to view the source</span>`);
+  tip.style.display="block";
+  tip.style.top=(r.bottom+8)+"px";
+  tip.style.left=Math.max(8,Math.min(r.left, window.innerWidth-tip.offsetWidth-16))+"px";
+});
+document.addEventListener("mouseout",e=>{if(e.target.closest&&e.target.closest(".cite")) tip.style.display="none";});
+document.addEventListener("click",e=>{const c=e.target.closest&&e.target.closest(".cite"); if(!c)return;
+  tip.style.display="none";
+  const info=chipInfo(c);
+  pop.innerHTML=`<span class="x" id="popx">×</span><h4>${esc(info.head)}</h4>`+
+    `<div class="src">${esc(info.src)}</div>`+
+    (info.passage ? `<blockquote>${esc(info.passage)}</blockquote>` : `<p class="miss">No verbatim source passage available.</p>`)+
+    (info.url ? `<a href="${info.url}" target="_blank">${esc(info.link)}</a>` : "");
+  backdrop.style.display="block"; pop.style.display="block";
+  pop.style.top="50%"; pop.style.left="50%"; pop.style.transform="translate(-50%,-50%)";
+  $("popx").onclick=closePop;
+});
+function closePop(){pop.style.display="none";backdrop.style.display="none";}
+backdrop.onclick=closePop;
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closePop();});
+
+// ── download / PDF of the full compliance pack ──
+function packMd(){return (outputs["generate_pack"]||{}).markdown||"";}
+function fileBase(){return ($("r-title").textContent||"compliance-pack").replace(/^Pack — /,"").replace(/[^a-z0-9]+/gi,"-").toLowerCase()||"compliance-pack";}
+$("dlMd").onclick=()=>{const m=packMd(); if(!m)return;
+  const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([m],{type:"text/markdown"}));
+  a.download="ai-act-pack-"+fileBase()+".md"; a.click(); URL.revokeObjectURL(a.href);};
+$("dlPdf").onclick=()=>{const m=packMd(); if(!m)return;
+  const html=window.marked?marked.parse(m):"<pre>"+esc(m)+"</pre>";
+  const w=window.open("","_blank");
+  w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>EU AI Act Compliance Pack</title><style>
+    body{font:13px/1.6 -apple-system,Segoe UI,Roboto,sans-serif;max-width:780px;margin:32px auto;padding:0 22px;color:#111}
+    h1{border-bottom:2px solid #222;padding-bottom:6px;font-size:24px} h2{margin-top:26px;font-size:18px} h3{font-size:15px}
+    table{border-collapse:collapse;width:100%;margin:8px 0} th,td{border:1px solid #bbb;padding:5px 8px;font-size:12px;text-align:left;vertical-align:top} th{background:#f0f0f0}
+    blockquote{border-left:3px solid #888;margin:6px 0;padding:4px 14px;color:#444;font-style:italic;background:#f7f7f7}
+    a{color:#1a56db;text-decoration:none} code{background:#eee;padding:1px 4px;border-radius:3px}
+    @media print{a[href]:after{content:" (" attr(href) ")";font-size:10px;color:#666}}
+  </style></head><body>${html}</body></html>`);
+  w.document.close(); setTimeout(()=>{w.focus();w.print();},350);};
+
+// ── Q&A chat (no pipeline re-run; grounded by Moonlit) ──
+function buildCtx(){
+  const s=(outputs.classifier||{}).surfaces||[];
+  if(!s.length) return "";
+  const co=$("r-title").textContent.replace(/^Pack — /,"");
+  return `Company: ${co}\nClassified AI surfaces:\n`+s.map(x=>
+    `- ${x.name}: ${x.risk_tier}${x.annex_iii_category?" ("+x.annex_iii_category+")":""}; citations: ${(x.citations||[]).join(", ")||"—"}`).join("\n");
+}
+function chatAsk(q){
+  q=(q||$("chatQ").value).trim(); if(!q) return;
+  const e=$("chatEmpty"); if(e) e.style.display="none";
+  const msgs=$("chatMsgs");
+  const u=document.createElement("div"); u.className="bubble u"; u.textContent=q; msgs.appendChild(u);
+  $("chatQ").value="";
+  const a=document.createElement("div"); a.className="bubble a thinking"; a.textContent="thinking…"; msgs.appendChild(a);
+  msgs.scrollTop=msgs.scrollHeight; $("chatSend").disabled=true;
+  fetch("/ask?q="+encodeURIComponent(q)+"&ctx="+encodeURIComponent(buildCtx()))
+    .then(r=>r.json()).then(d=>{
+      a.classList.remove("thinking");
+      a.innerHTML = window.marked ? marked.parse(d.answer||"") : esc(d.answer||"");
+      if(d.sources&&d.sources.length){
+        const sd=document.createElement("div"); sd.className="src";
+        d.sources.forEach(s=>{const ln=document.createElement("a");ln.href=s.url;ln.target="_blank";
+          ln.textContent=s.source+(s.title?" — "+s.title.slice(0,64):"");ln.title=s.passage||"";sd.appendChild(ln);});
+        a.appendChild(sd);
+      }
+      linkifyCitations(a);
+      msgs.scrollTop=msgs.scrollHeight;
+    }).catch(err=>{a.classList.remove("thinking");a.textContent="Error: "+err;})
+    .finally(()=>{$("chatSend").disabled=false;});
+}
+$("chatSend").onclick=()=>chatAsk();
+$("chatQ").addEventListener("keydown",e=>{if(e.key==="Enter")chatAsk();});
+document.querySelectorAll(".chat-empty .q").forEach(el=>el.onclick=()=>chatAsk(el.textContent));
+</script>
+</body>
+</html>

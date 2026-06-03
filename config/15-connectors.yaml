@@ -1,0 +1,31 @@
+# Moonlit Legal Research as a first-class Sinas connector — declarative HTTP integration.
+# Auth resolves the MOONLIT_KEY secret into the Ocp-Apim-Subscription-Key header.
+# Agents can enable specific operations as tools (see the `researcher` agent).
+connectors:
+  - namespace: default
+    name: moonlit
+    description: >
+      Moonlit Legal Research API — search EU and Dutch (NL/BE/DE/FR) legal sources for verbatim
+      passages. A first-class Sinas integration; agents call `search` for ad-hoc legal lookups.
+    base_url: https://api.moonlit.ai/v1.1
+    auth:
+      type: api_key
+      secret: MOONLIT_KEY
+      position: header
+      header: Ocp-Apim-Subscription-Key
+    timeout_seconds: 30
+    operations:
+      - name: search
+        method: POST
+        path: /search/hybrid_search_reranked
+        description: >
+          Hybrid + reranked legal search. Returns ranked documents, each with `semanticHighlights`
+          (verbatim source passages) and a `sourceUrl`. Keep num_results small (3-5).
+        request_body_mapping: json
+        response_mapping: json
+        parameters:
+          type: object
+          required: [query]
+          properties:
+            query: { type: string, description: "Natural-language or keyword legal query" }
+            num_results: { type: integer, description: "Max results (1-100)", default: 5 }

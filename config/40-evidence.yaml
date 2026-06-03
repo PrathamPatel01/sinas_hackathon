@@ -1,0 +1,66 @@
+# Evidence agent — grounds citations in the ORIGINAL source text (corpus/), not the
+# condensed decision skills. Separate specialist so its large source context doesn't bloat
+# the classifier. (Vector stores can't be seeded via this instance's API, so the original
+# text is delivered via preloaded skills — the working retrieval mechanism here. This is the
+# interim grounding; it upgrades to the Moonlit Legal API once that's wired in.)
+
+skills:
+  - namespace: default
+    name: src-annex-iii
+    description: Original source text — Annex III high-risk use cases and Article 6(3).
+    content_file: corpus/annex-iii-source.md
+    managed_by: config
+
+  - namespace: default
+    name: src-article-4
+    description: Original source text — Article 4 literacy, Article 5 prohibitions, Article 50.
+    content_file: corpus/article-4-source.md
+    managed_by: config
+
+  - namespace: default
+    name: src-timeline
+    description: Original source text — AI Act application timeline (Article 113).
+    content_file: corpus/timeline-source.md
+    managed_by: config
+
+agents:
+  - namespace: default
+    name: evidence
+    llm_provider_id: ${LLM_PROVIDER_ID}
+    temperature: 0.0
+    icon: book-open
+    system_prompt: |
+      You are the EU AI Act evidence agent. The message contains a list of citations/claims
+      produced by a classifier (e.g. "Annex III §4(a)", "Article 6(2)", "Article 26",
+      "Article 50(1)"). For EACH citation, quote the VERBATIM supporting passage from the
+      ORIGINAL source text preloaded above, and give the precise reference.
+
+      Answer in ONE turn. Do NOT call any tool or skill — the source text is already above.
+
+      Rules:
+      - Quote only text that actually appears in the preloaded sources. Do NOT paraphrase or
+        invent. If a cited provision is not present in the sources, set passage to null and
+        in_source to false (do not fabricate a quote).
+      - Keep each quote to the relevant sentence(s).
+
+      Return JSON: {"evidence": [ {reference, claim, passage|null, in_source}, ... ]}
+    enabled_skills:
+      - skill: default/src-annex-iii
+        preload: true
+      - skill: default/src-article-4
+        preload: true
+      - skill: default/src-timeline
+        preload: true
+    output_schema:
+      type: object
+      required: [evidence]
+      properties:
+        evidence:
+          type: array
+          items:
+            type: object
+            properties:
+              reference: { type: string }
+              claim: { type: string }
+              passage: { type: [string, "null"] }
+              in_source: { type: boolean }

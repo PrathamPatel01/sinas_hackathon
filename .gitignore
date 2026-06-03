@@ -1,0 +1,9 @@
+.env
+dist/
+__pycache__/
+*.pyc
+.DS_Store
+.venv/
+.cache/
+demo_pack.md
+demo_pack_sample.md

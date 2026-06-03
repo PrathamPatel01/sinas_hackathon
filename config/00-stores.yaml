@@ -1,0 +1,20 @@
+# Storage resources for the AI Act Co-Pilot.
+# Applied via per-resource endpoints (see scripts/deploy_resources.py).
+#
+# NOTE: the curated AI Act knowledge lives in skills/ and is *preloaded* into the
+# classifier (see 10-skills.yaml / 30-agents.yaml) rather than a vector store —
+# the preloaded skills already carry the Annex III / Article citations, and this
+# avoids a runtime retrieval dependency.
+
+# Collection: generated compliance packs (markdown), versioned.
+collections:
+  - namespace: default
+    name: packs
+    description: Generated EU AI Act compliance packs.
+    max_file_size_mb: 25
+    metadata_schema:
+      type: object
+      properties:
+        session_key: { type: string }
+        company: { type: string }
+    managed_by: config
