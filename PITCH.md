@@ -1,5 +1,5 @@
 # Pitch script — hawkEYE
-*~6 minutes · 9 slides · 1 live demo. Deck: open `web/deck.html` in a browser (←/→ to advance, **N** for speaker notes, the countdown updates itself).*
+*~5.5 minutes · 8 slides · 1 live demo. Deck: open `web/deck.html` in a browser (←/→ to advance, **N** for speaker notes, the countdown updates itself).*
 
 **Tone:** deadpan, dry, confident. You're a lawyer presenting evidence, not a founder begging.
 The jokes work because you *don't* laugh at them. Pause after punchlines — let the room do the work.
@@ -166,27 +166,7 @@ The jokes work because you *don't* laugh at them. Pause after punchlines — let
 
 ---
 
-## SLIDE 8 — Closing argument (~35s)
-
-> What you just saw: five agents on Sinas. Two layers of real law — EU and Dutch — fetched
-> live through Moonlit. A pack you can download as PDF. A chat that cites its sources.
-> All of it open source.
->
-> Next: Moonlit already holds German, French and Belgian law — **same pipeline, new flags**.
-> Then continuous monitoring, so the day your shiny new SaaS tool quietly turns high-risk,
-> your phone buzzes before the regulator's does.
->
-> *(slow down for the close)*
->
-> August 2nd is in **58 days**. The lawyers are booked until September.
->
-> **We're not.**
->
-> AI got these companies into this mess. We taught it to clean up after itself.
-
----
-
-## SLIDE 9 — The vision: "one law down" (~25s)
+## SLIDE 8 — The vision: "one law down" (~30s)
 
 > And here's the real pitch: **nothing in those four moves is AI-Act-specific.**
 >
@@ -199,10 +179,12 @@ The jokes work because you *don't* laugh at them. Pause after punchlines — let
 >
 > *(slow, final)*
 >
+> August 2nd is in **58 days** — the lawyers are booked until September. We're not.
+>
 > **hawkEYE — every law, with receipts.** Thank you.
 
 **Delivery:** the zoom-out. Slide 7 was the mic-drop for *this* product; this is the "and it's a platform" beat investors/juries score on. End on the tagline, not on "questions?".
-**Timing note:** full script now runs ~6:40 — if the slot is a hard 5:00, cut slide 2's option cards to one line each, demo steps 7–8, and compress slides 4+5 into one breath.
+**Timing note:** full script now runs ~6:00 — if the slot is a hard 5:00, cut slide 2's option cards to one line each, demo steps 7–8, and compress slides 4+5 into one breath.
 
 ---
 
