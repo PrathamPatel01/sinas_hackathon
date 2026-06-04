@@ -153,13 +153,14 @@ The jokes work because you *don't* laugh at them. Pause after punchlines — let
 > **B2C, one-time.** The panic purchase: you're fundraising, you're being audited,
 > August is coming. Run hawkEYE, €49, keep the pack, sleep again. TurboTax energy.
 >
-> **B2B, subscription — priced per module, per employee.** €149 per module, per head.
-> The AI Act is module one; GDPR, DORA, NIS2 — every law Moonlit holds becomes a SKU,
-> and every hire grows the contract. The subscription buys *continuous* watching:
-> your stack changes, the law changes, hawkEYE re-runs and pings you before the regulator does.
+> **B2B, subscription — and not to the SMEs.** To the people who serve a thousand of them
+> each: law firms, consultancies, legal-tech platforms. **€149 per professional, per module,
+> per month** — standard legal-tech seat pricing, and they can afford it, because one hawkEYE
+> seat lets an associate serve ten clients instead of one. Every law a module, every hire a seat.
 >
-> Go-to-market: start where the panic is — the deadline — and ride the channels SMEs
-> already trust: **accountants, insurers, VC platform teams.** Free scan in, modules out.
+> Go-to-market: B2C where the panic is — the deadline. B2B to the firms that serve a
+> thousand SMEs each: **legal tech, consultancies, accountants.** One firm signed =
+> a thousand companies covered.
 
 **Delivery:** "three, if you count the fine" is the laugh — don't step on it. The module-as-SKU line tees up the vision slide perfectly.
 
@@ -213,7 +214,7 @@ The jokes work because you *don't* laugh at them. Pause after punchlines — let
 | *"Why agents instead of one big prompt?"* | "Because one prompt gives you vibes. Specialists give you verifiable steps: the classifier's output is checkable, the evidence agent's quotes are verbatim, the policy cites both. When something's wrong, you know *which* agent to fix." |
 | *"How do you know the citations are right?"* | "We don't trust the model's memory at all — the text comes from Moonlit's legal corpus at runtime, and the click-through goes to the source. The model decides *relevance*; the *text* is retrieval." |
 | *"What about hallucinations?"* | "The riskiest output — legal text — is never generated, only retrieved. The classification is reviewable, with the carve-out logic (Article 6(3)) made explicit so a human can disagree." |
-| *"Business model?"* | "Per-pack freemium → monitoring subscription. The pack gets you in; the 'your stack changed, here's what it means' alert is what they pay for. Compliance isn't a document, it's a feed." |
+| *"Business model?"* | "Two motions: €49 packs direct to SMEs where the deadline panic is, and €149/seat/module/month to law firms and legal-tech platforms who serve thousands of SMEs each — standard legal-tech seat pricing, one firm signed covers a thousand companies." |
 | *"Why won't ChatGPT kill this?"* | "Ask ChatGPT for Annex III §4(a) verbatim and click its source. We'll wait. The moat is the grounded legal corpus, the structured pipeline, and the artifact — not the chat." |
 | *"GDPR/data concerns?"* | "Sinas is self-hosted — the company description never leaves their instance, and the only external call is to a legal-text API. We send the law a question, not their data." |
 | *"What was hardest?"* | (honest, charming) "Making agents reliable. We found a worker deadlock, a context-compaction bug, and learned Sinas executes an agent's tool calls serially — so we redesigned around fewer, fatter calls. The architecture in the slide is the *survivor* of four worse ones." |
