@@ -150,6 +150,21 @@
   .archcap{font-family:var(--mono);color:var(--dim);font-size:clamp(11px,1.1vw,14px);letter-spacing:.06em}
   .archcap b{color:var(--ink)}
 
+  /* vision slide — the law grid */
+  .laws{display:flex;flex-wrap:wrap;gap:.9vw;margin:3vh 0;max-width:62vw}
+  .law{font-family:var(--mono);font-size:clamp(12px,1.3vw,17px);letter-spacing:.04em;
+    border:1px solid var(--line);border-radius:10px;padding:1.1vh 1.1vw;color:var(--dim);
+    background:rgba(14,20,32,.75);animation:lawpulse 3.6s ease-in-out infinite}
+  .law:nth-child(2){animation-delay:.3s}.law:nth-child(3){animation-delay:.6s}
+  .law:nth-child(4){animation-delay:.9s}.law:nth-child(5){animation-delay:1.2s}
+  .law:nth-child(6){animation-delay:1.5s}.law:nth-child(7){animation-delay:1.8s}
+  .law:nth-child(8){animation-delay:2.1s}.law:nth-child(9){animation-delay:2.4s}
+  .law:nth-child(10){animation-delay:2.7s}
+  @keyframes lawpulse{0%,100%{border-color:var(--line);color:var(--dim)}
+    50%{border-color:rgba(91,157,255,.55);color:var(--ink);box-shadow:0 0 22px -10px var(--blue)}}
+  .law.today{border-color:var(--green);color:var(--green);font-weight:700;animation:none;
+    box-shadow:0 0 26px -10px var(--green)}
+
   /* slide 4 — demo */
   .play{display:flex;align-items:center;gap:3vw}
   .playbtn{width:clamp(90px,11vw,150px);height:clamp(90px,11vw,150px);border-radius:50%;
@@ -311,6 +326,29 @@
      continuous monitoring, and a push alert the day your shiny new tool quietly turns high‑risk.</p>
   <p class="bigline r" style="margin-top:3vh"><span class="gavel">⚖</span> <span id="days2">58</span> days. The lawyers are booked. <span class="hl-b">We're not.</span></p>
   <div class="url r"><b style="color:var(--ink)">hawkEYE</b> · github.com/kshitij01042002/sinas_hackathon</div>
+</section>
+
+<!-- ── SLIDE 8 · the vision ────────────────────────────────────────────── -->
+<section class="slide" data-notes="(~25s — the zoom-out, then the thank-you) 'And here is the real pitch: nothing in those four moves is AI-Act-specific.' (gesture at the grid) 'Classify against a law. Ground in its verbatim text. Draft the controls. Point the same pipeline at GDPR. DORA. NIS2. CSRD. Moonlit already holds the corpora — one-point-seven million documents, six jurisdictions. The AI Act was simply the law with the loudest deadline.' (beat, final line slow) 'hawkEYE — every law, with receipts. Thank you.'">
+  <div class="kicker r">THE APPEAL · WHERE THIS GOES</div>
+  <h1 class="r" style="font-size:clamp(32px,5.4vw,84px)">The AI Act is <span class="hl-b">one law.</span><br/>
+    <span class="hl-a">We counted — there are more.</span></h1>
+  <div class="laws r">
+    <span class="law today">EU AI Act ✓</span>
+    <span class="law">GDPR / AVG</span>
+    <span class="law">DORA</span>
+    <span class="law">NIS2</span>
+    <span class="law">CSRD</span>
+    <span class="law">MiCA</span>
+    <span class="law">Cyber Resilience Act</span>
+    <span class="law">Platform Work Directive</span>
+    <span class="law">EHDS</span>
+    <span class="law">…every law Moonlit holds</span>
+  </div>
+  <p class="foot r">Nothing in the four moves is AI-Act-specific. <b>Classify → ground → draft → deliver</b> points
+     at any regulation — and Moonlit already holds <b>1.7M+ documents across six jurisdictions</b>.
+     The AI Act was simply the law with the loudest deadline.</p>
+  <p class="bigline r" style="margin-top:3vh">hawkEYE — <span class="hl-a">every law,</span> <span class="hl-b">with receipts.</span></p>
 </section>
 
 <div class="notes" id="notes"><h4>Speaker notes</h4><div id="notesBody"></div></div>
