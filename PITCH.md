@@ -1,5 +1,5 @@
 # Pitch script — hawkEYE
-*5 minutes · 6 slides · 1 live demo. Deck: open `web/deck.html` in a browser (←/→ to advance, **N** for speaker notes, the countdown updates itself).*
+*5 minutes · 7 slides · 1 live demo. Deck: open `web/deck.html` in a browser (←/→ to advance, **N** for speaker notes, the countdown updates itself).*
 
 **Tone:** deadpan, dry, confident. You're a lawyer presenting evidence, not a founder begging.
 The jokes work because you *don't* laugh at them. Pause after punchlines — let the room do the work.
@@ -52,7 +52,20 @@ The jokes work because you *don't* laugh at them. Pause after punchlines — let
 
 ---
 
-## SLIDE 3 — "So we hired five employees who read all 459 pages." (~55s)
+## SLIDE 3 — The reveal: hawkEYE (~15s)
+
+> *(let the logo and the name land — don't talk over the first beat)*
+>
+> So we built **hawkEYE**.
+>
+> Compliance, **with receipts**. It doesn't summarize the law — it quotes it.
+> And it looks at your AI stack the way the regulator will.
+
+**Delivery:** this is the breath between two joke-heavy slides. Slow, proud, fifteen seconds, advance.
+
+---
+
+## SLIDE 4 — "So we hired five employees who read all 459 pages." (~50s)
 
 > So we hired five employees who actually read all 459 pages.
 > They don't bill hours, they don't take holidays, and they finish the whole job in **75 seconds**.
@@ -77,7 +90,7 @@ The jokes work because you *don't* laugh at them. Pause after punchlines — let
 
 ---
 
-## SLIDE 4 — The architecture: "Four moves." (~25s, brisk)
+## SLIDE 5 — The architecture: "Four moves." (~25s, brisk)
 
 > Quick X-ray before the demo — four moves.
 >
@@ -100,7 +113,7 @@ The jokes work because you *don't* laugh at them. Pause after punchlines — let
 
 ---
 
-## SLIDE 5 — LIVE DEMO (~2 min)
+## SLIDE 6 — LIVE DEMO (~2 min)
 
 *(switch to `http://localhost:8800` — the input is pre-filled)*
 
@@ -134,7 +147,7 @@ The jokes work because you *don't* laugh at them. Pause after punchlines — let
 
 ---
 
-## SLIDE 6 — Closing argument (~35s)
+## SLIDE 7 — Closing argument (~35s)
 
 > What you just saw: five agents on Sinas. Two layers of real law — EU and Dutch — fetched
 > live through Moonlit. A pack you can download as PDF. A chat that cites its sources.

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 96" fill="none">
+  <!-- hawkEYE — the eye that reads the law.
+       Sharp raptor brow, blue iris, § pupil. Palette matches the product UI. -->
+  <!-- brow flick -->
+  <path d="M40 22 L26 9" stroke="#fbbd23" stroke-width="5" stroke-linecap="round"/>
+  <!-- eye: angular hawk top lid, smooth lower lid -->
+  <path d="M6 56 L40 22 L122 42 C 102 80 52 92 6 56 Z"
+        fill="#0e1420" stroke="#e9eef5" stroke-width="4" stroke-linejoin="round"/>
+  <!-- iris -->
+  <circle cx="61" cy="53" r="20" stroke="#5b9dff" stroke-width="5"/>
+  <circle cx="61" cy="53" r="12.5" fill="#5b9dff" opacity="0.16"/>
+  <!-- § pupil -->
+  <text x="61" y="62" text-anchor="middle"
+        font-family="Iowan Old Style,Palatino,Georgia,serif" font-weight="700"
+        font-size="25" fill="#fbbd23">§</text>
+  <!-- glint -->
+  <circle cx="69" cy="45" r="3" fill="#e9eef5"/>
+</svg>

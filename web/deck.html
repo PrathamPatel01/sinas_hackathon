@@ -84,6 +84,17 @@
   .opt.bad{border-color:#3a2330}
   .opt p i{color:#64748b;font-size:.88em}
 
+  /* reveal slide — logo + wordmark */
+  .mark{width:clamp(150px,17vw,250px);filter:drop-shadow(0 0 34px rgba(91,157,255,.4));
+    animation:markfloat 5.5s ease-in-out infinite}
+  @keyframes markfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  .wordmark{font-family:var(--display);font-weight:800;text-transform:none;line-height:.9;
+    font-size:clamp(64px,11vw,170px);letter-spacing:.01em;text-align:center;margin:1.2vh 0 .6vh}
+  .wordmark .eye{color:var(--amber)}
+  .tagline{font-family:var(--display);text-transform:uppercase;font-weight:700;text-align:center;
+    font-size:clamp(19px,2.7vw,38px);letter-spacing:.05em;margin-top:1vh}
+  .tagline b{color:var(--blue)}
+
   /* slide 3 — pipeline + live chip */
   .pipe{display:flex;align-items:center;gap:.9vw;margin:3vh 0;flex-wrap:wrap;font-family:var(--mono)}
   .anode{border:1px solid var(--line);background:var(--bg2);border-radius:12px;padding:1.4vh 1.1vw;
@@ -196,9 +207,30 @@
   </div>
 </section>
 
-<!-- ── SLIDE 3 · the hero ──────────────────────────────────────────────── -->
+<!-- ── SLIDE 3 · the reveal ────────────────────────────────────────────── -->
+<section class="slide" data-notes="(~15s — the reveal; let the slide breathe) 'So we built hawkEYE.' (pause — let them read the tagline) 'Compliance, with receipts. It doesn't summarize the law — it quotes it. And it looks at your AI stack the way the regulator will.' Then advance: 'Here's who does the work…'">
+  <div class="kicker r" style="text-align:center">EXHIBIT B · THE DEFENCE PRESENTS</div>
+  <div class="r" style="display:flex;justify-content:center;margin:2.5vh 0 .5vh">
+    <svg class="mark" viewBox="0 0 128 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M40 22 L26 9" stroke="#fbbd23" stroke-width="5" stroke-linecap="round"/>
+      <path d="M6 56 L40 22 L122 42 C 102 80 52 92 6 56 Z"
+            fill="#0e1420" stroke="#e9eef5" stroke-width="4" stroke-linejoin="round"/>
+      <circle cx="61" cy="53" r="20" stroke="#5b9dff" stroke-width="5"/>
+      <circle cx="61" cy="53" r="12.5" fill="#5b9dff" opacity="0.16"/>
+      <text x="61" y="62" text-anchor="middle" font-family="Iowan Old Style,Palatino,Georgia,serif"
+            font-weight="700" font-size="25" fill="#fbbd23">§</text>
+      <circle cx="69" cy="45" r="3" fill="#e9eef5"/>
+    </svg>
+  </div>
+  <div class="wordmark r">hawk<span class="eye">EYE</span></div>
+  <p class="tagline r">Compliance, <b>with receipts.</b></p>
+  <p class="foot r" style="text-align:center;margin:2vh auto 0">It doesn't summarize the law. It quotes it —
+     verbatim, EU and Dutch, one click from the source.</p>
+</section>
+
+<!-- ── SLIDE 4 · the hero ──────────────────────────────────────────────── -->
 <section class="slide" data-notes="'So we hired five employees who actually read all 459 pages. They don't bill hours, they don't take holidays, and they finished the assignment in 75 seconds.' Walk the pipeline: 'One classifies your AI tools against Annex III. Two go get the LAW — not summaries: the verbatim EU text AND live Dutch AP/ACM guidance, through Moonlit's legal API. Two more draft your oversight policy and your Article 4 training plan. Out comes the compliance pack.' … Then the chip (hover it ON the slide): 'And this is the part we're proud of. Every claim looks like this. Hover… that is the actual law, pulled live. We don't ask you to trust AI. We ask you to click.'">
-  <div class="kicker r">THE DEFENCE PRESENTS · AI ACT CO‑PILOT</div>
+  <div class="kicker r">THE WORKFORCE · FIVE EMPLOYEES, ZERO HOLIDAYS</div>
   <h1 class="r" style="font-size:clamp(34px,5.4vw,84px)">So we hired <span class="hl-b">five<br/>employees</span> who read<br/>all 459 pages.</h1>
   <div class="pipe r">
     <div class="anode">🛡️ <b>Classifier</b></div><div class="arrow">→</div>
@@ -255,7 +287,7 @@
 
 <!-- ── SLIDE 5 · the demo ──────────────────────────────────────────────── -->
 <section class="slide" data-notes="SWITCH TO localhost:8800. Script: paste recruiter scenario, hit RUN. While phase ① spins: 'Wervenk Recruitment. 60 humans, four AIs. The classifier is reading their stack while Moonlit fetches the Act in parallel.' Phase ② lights: 'EU text grounded… and the Dutch agent just pulled real AP guidance from MARCH 2026.' Phase ③: 'Policy and training drafting — citing that Dutch guidance by name.' DONE → click Classifier: 'HireScan. Red. Annex III §4(a).' Click the blue chip → verbatim law. Click an amber 🇳🇱 chip in Policy → AP text. Then follow-up box: 'we added AI exam proctoring' → NEW badge appears: 'New tool, new high-risk finding, sixty seconds.' Optionally one chat question. FALLBACK if wifi dies: open the committed demo_pack + say 'the agents pre-signed their confession.'">
-  <div class="kicker r">EXHIBIT B · THE PART WHERE IT'S REAL</div>
+  <div class="kicker r">EXHIBIT D · THE PART WHERE IT'S REAL</div>
   <div class="play r" style="margin-top:2vh">
     <div class="playbtn">▶</div>
     <h1 style="font-size:clamp(40px,7vw,108px);margin:0">Live demo</h1>
