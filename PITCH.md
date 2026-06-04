@@ -151,12 +151,12 @@ The jokes work because you *don't* laugh at them. Pause after punchlines — let
 > How does this make money? Two ways — three, if you count the fine.
 >
 > **B2C, one-time.** The panic purchase: you're fundraising, you're being audited,
-> August is coming. Run hawkEYE, €299, keep the pack, sleep again. TurboTax energy.
+> August is coming. Run hawkEYE, €49, keep the pack, sleep again. TurboTax energy.
 >
-> **B2B, subscription — priced per active law module.** The AI Act is module one.
-> GDPR, DORA, NIS2 — every law Moonlit holds becomes a SKU. The subscription buys
-> *continuous* watching: your stack changes, the law changes, hawkEYE re-runs and
-> pings you before the regulator does.
+> **B2B, subscription — priced per module, per employee.** Two euros per head per month.
+> The AI Act is module one; GDPR, DORA, NIS2 — every law Moonlit holds becomes a SKU,
+> and every hire grows the contract. The subscription buys *continuous* watching:
+> your stack changes, the law changes, hawkEYE re-runs and pings you before the regulator does.
 >
 > Go-to-market: start where the panic is — the deadline — and ride the channels SMEs
 > already trust: **accountants, insurers, VC platform teams.** Free scan in, modules out.
