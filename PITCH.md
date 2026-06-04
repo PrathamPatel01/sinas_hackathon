@@ -1,5 +1,5 @@
 # Pitch script — hawkEYE
-*~5.5 minutes · 8 slides · 1 live demo. Deck: open `web/deck.html` in a browser (←/→ to advance, **N** for speaker notes, the countdown updates itself).*
+*~6 minutes · 9 slides · 1 live demo. Deck: open `web/deck.html` in a browser (←/→ to advance, **N** for speaker notes, the countdown updates itself).*
 
 **Tone:** deadpan, dry, confident. You're a lawyer presenting evidence, not a founder begging.
 The jokes work because you *don't* laugh at them. Pause after punchlines — let the room do the work.
@@ -112,7 +112,25 @@ The jokes work because you *don't* laugh at them. Pause after punchlines — let
 
 ---
 
-## SLIDE 6 — LIVE DEMO (~2 min)
+## SLIDE 6 — The Sinas manifest (~20s, for the home crowd)
+
+> And for the people who built the platform we built on — this is what's actually deployed.
+>
+> **Twenty-three resources on one Sinas instance:** six agents, five functions, the Moonlit
+> connector, nine skills, a secret, a collection. All declarative YAML, idempotently
+> re-deployable. And we used the whole toolbox — agent-to-agent over the queue, parallel
+> tool calls, shared-pool functions reading secrets, session memory in the chat.
+>
+> *(footnote, deadpan)*
+>
+> We also buried four test agents along the way. Ask us about the recreate bug —
+> it has a body count.
+
+**Delivery:** brisk and proud — this is the "we didn't just use Sinas, we exercised it" slide. The in-memoriam footnote is the laugh; the jury includes the people who can fix that bug.
+
+---
+
+## SLIDE 7 — LIVE DEMO (~2 min)
 
 *(switch to `http://localhost:8800` — the input is pre-filled)*
 
@@ -146,7 +164,7 @@ The jokes work because you *don't* laugh at them. Pause after punchlines — let
 
 ---
 
-## SLIDE 7 — The business: "Two ways to pay." (~30s)
+## SLIDE 8 — The business: "Two ways to pay." (~30s)
 
 > How does this make money? Two ways — three, if you count the fine.
 >
@@ -166,7 +184,7 @@ The jokes work because you *don't* laugh at them. Pause after punchlines — let
 
 ---
 
-## SLIDE 8 — The vision: "one law down" (~30s)
+## SLIDE 9 — The vision: "one law down" (~30s)
 
 > And here's the real pitch: **nothing in those four moves is AI-Act-specific.**
 >
@@ -184,7 +202,7 @@ The jokes work because you *don't* laugh at them. Pause after punchlines — let
 > **hawkEYE — every law, with receipts.** Thank you.
 
 **Delivery:** the zoom-out. Slide 7 was the mic-drop for *this* product; this is the "and it's a platform" beat investors/juries score on. End on the tagline, not on "questions?".
-**Timing note:** full script now runs ~6:00 — if the slot is a hard 5:00, cut slide 2's option cards to one line each, demo steps 7–8, and compress slides 4+5 into one breath.
+**Timing note:** full script now runs ~6:20 — if the slot is a hard 5:00, cut slide 2's option cards to one line each, demo steps 7–8, and compress slides 4+5 into one breath.
 
 ---
 

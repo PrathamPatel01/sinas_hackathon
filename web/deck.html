@@ -165,6 +165,18 @@
   .law.today{border-color:var(--green);color:var(--green);font-weight:700;animation:none;
     box-shadow:0 0 26px -10px var(--green)}
 
+  /* sinas manifest slide */
+  .manifest{display:grid;grid-template-columns:repeat(3,1fr);gap:1vw;margin:2.6vh 0 1.6vh}
+  .mgroup{border:1px solid var(--line);border-radius:13px;background:rgba(14,20,32,.8);padding:1.5vh 1.1vw}
+  .mgroup h4{font-family:var(--mono);font-size:clamp(10px,1vw,13px);letter-spacing:.16em;
+    text-transform:uppercase;color:var(--blue);margin:0 0 .8vh;display:flex;justify-content:space-between}
+  .mgroup h4 .cnt{color:var(--amber);font-weight:700}
+  .mgroup p{font-family:var(--mono);font-size:clamp(10.5px,1.05vw,13.5px);color:var(--dim);line-height:1.75;margin:0}
+  .mgroup p b{color:var(--ink);font-weight:600}
+  .featstrip{font-family:var(--mono);font-size:clamp(10.5px,1.05vw,13.5px);color:var(--dim);
+    border:1px dashed var(--line);border-radius:11px;padding:1.2vh 1.2vw;letter-spacing:.03em}
+  .featstrip b{color:var(--ink)}
+
   /* slide 4 — demo */
   .play{display:flex;align-items:center;gap:3vw}
   .playbtn{width:clamp(90px,11vw,150px);height:clamp(90px,11vw,150px);border-radius:50%;
@@ -298,6 +310,37 @@
   <p class="archcap r">runs <b>self-hosted on Sinas</b> — company data never leaves the building · <b>~75 seconds</b> end-to-end · follow-up chat answers with sources</p>
   <p class="foot r" style="margin-top:2vh">Survivor of: one worker deadlock, one context-compaction bug, and four strictly worse architectures.<b>*</b>
     <i style="color:#64748b">&nbsp;*ask us in Q&A — it's a good story.</i></p>
+</section>
+
+<!-- ── SLIDE 5b · the sinas manifest ───────────────────────────────────── -->
+<section class="slide" data-notes="(~20s, for the Sinas crowd) 'And for the people who built the platform we built on — this is what is actually deployed. Twenty-three resources on one Sinas instance: six agents, five functions, the Moonlit connector, nine skills, a secret, a collection. All declarative YAML, idempotently re-deployable.' (point at strip) 'And we used the whole toolbox: agent-to-agent over the queue, parallel tool calls, shared-pool functions reading secrets, session memory in the chat.' (footnote, deadpan) 'We also buried four test agents along the way. Ask us about the recreate bug — it has a body count.'">
+  <div class="kicker r">EXHIBIT C · <b>ANNEX I</b> — THE SINAS MANIFEST</div>
+  <h1 class="r" style="font-size:clamp(28px,4.4vw,66px);margin-bottom:.6vh">Built on Sinas.<br/>
+    <span style="color:var(--dim);font-size:.5em;text-transform:none;letter-spacing:0;font-family:var(--serif);font-style:italic;font-weight:400">23 resources, one instance, all declarative.</span></h1>
+  <div class="statrow r" style="margin:1.8vh 0">
+    <div class="stat"><div class="n">6</div><div class="l">agents</div></div>
+    <div class="stat"><div class="n">5</div><div class="l">functions</div></div>
+    <div class="stat"><div class="n">1</div><div class="l">connector</div></div>
+    <div class="stat"><div class="n">9</div><div class="l">skills</div></div>
+    <div class="stat"><div class="n">1</div><div class="l">secret</div></div>
+    <div class="stat"><div class="n">1</div><div class="l">collection</div></div>
+  </div>
+  <div class="manifest r">
+    <div class="mgroup"><h4>agents <span class="cnt">×6</span></h4>
+      <p><b>copilot</b> orchestrator · <b>classifier</b> · <b>policy-drafter</b> · <b>training-architect</b> · <b>evidence</b> · <b>aiact_qa</b> chat</p></div>
+    <div class="mgroup"><h4>functions <span class="cnt">×5</span></h4>
+      <p><b>moonlit_evidence</b> + <b>moonlit_national</b> (shared-pool, read the secret) · <b>generate_pack</b> · save/get_inventory</p></div>
+    <div class="mgroup"><h4>connector + secret <span class="cnt">×2</span></h4>
+      <p><b>moonlit</b> → api.moonlit.ai, auth from <b>MOONLIT_KEY</b> — encrypted at rest, never in an agent prompt</p></div>
+    <div class="mgroup"><h4>skills <span class="cnt">×9</span></h4>
+      <p>6 × curated decision knowledge (risk tiers, Annex III, Art. 4…) · 3 × verbatim source corpus</p></div>
+    <div class="mgroup"><h4>collection <span class="cnt">×1</span></h4>
+      <p><b>packs</b> — generated compliance packs, versioned</p></div>
+    <div class="mgroup"><h4>platform features</h4>
+      <p>agent→agent over the <b>Redis queue</b> · <b>parallel tool calls</b> · <b>session memory</b> · idempotent <b>config deploys</b></p></div>
+  </div>
+  <p class="foot r">In memoriam: <i>probeagent, echoer, miniorch, gamma</i> — test agents lost to a recreate bug.
+     They are survived by this diagram.<b>*</b> <i style="color:#64748b">*ask us in Q&A.</i></p>
 </section>
 
 <!-- ── SLIDE 5 · the demo ──────────────────────────────────────────────── -->
