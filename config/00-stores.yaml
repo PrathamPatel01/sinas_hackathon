@@ -1,4 +1,4 @@
-# Storage resources for the AI Act Co-Pilot.
+# Storage resources for hawkEYE.
 # Applied via per-resource endpoints (see scripts/deploy_resources.py).
 #
 # NOTE: the curated AI Act knowledge lives in skills/ and is *preloaded* into the

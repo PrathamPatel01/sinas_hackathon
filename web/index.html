@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>AI Act Co-Pilot · Multi-Agent Pipeline</title>
+<title>hawkEYE · Multi-Agent Pipeline</title>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <style>
   :root{
@@ -158,7 +158,7 @@
 <header>
   <span class="logo">⚖️</span>
   <div>
-    <h1>EU AI Act Compliance Co-Pilot</h1>
+    <h1>hawkEYE <span style="font-size:11px;color:var(--dim);font-weight:400;letter-spacing:.1em">EU AI ACT COMPLIANCE</span></h1>
     <div class="sub">Multi-agent pipeline on Sinas · citations grounded in verbatim law via Moonlit</div>
   </div>
   <div class="timer" id="timer"></div>
@@ -284,9 +284,7 @@ const TITLES = {classifier:"Classifier — AI surfaces & risk tiers",evidence:"M
   dutch:"Dutch Law — national guidance (AP / ACM) via Moonlit",generate_pack:"Full Compliance Pack"};
 const TIER_LABEL={high:"🔴 HIGH RISK",limited:"🟡 LIMITED",minimal:"🟢 MINIMAL",prohibited:"🛑 PROHIBITED"};
 const EXAMPLES = [
-  "We are a 40-person Dutch fintech. We use an AI credit-scoring model to assess loan applicants, a support chatbot, and Copilot for our developers.",
-  "We run a 200-person logistics company using AI route optimisation, an HR tool that ranks internal candidates for promotion, and ChatGPT for email.",
-  "We are a 25-person online education startup using AI proctoring during exams and an AI grader for student assignments."
+  "We are a 40-person Dutch fintech. We use an AI credit-scoring model to assess loan applicants, a support chatbot, and Copilot for our developers."
 ];
 let evt=null, t0=0, timerInt=null;
 let outputs={}, selected=null, userPicked=false;

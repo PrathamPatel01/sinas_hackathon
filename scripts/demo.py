@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""AI Act Co-Pilot — demo runner.
+"""hawkEYE — demo runner.
 
 Drives the Sinas specialist agents and renders a complete, full-length compliance
 pack to a Markdown file. Designed for a live demo / pitch:

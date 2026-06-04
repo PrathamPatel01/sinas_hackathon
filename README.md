@@ -1,6 +1,6 @@
-# AI Act Co-Pilot
+# hawkEYE 🦅
 
-A multi-agent compliance assistant for Dutch SMEs, built on the [Sinas](https://sinas.co) platform.
+**hawkEYE** — a multi-agent EU AI Act compliance assistant for Dutch SMEs, built on the [Sinas](https://sinas.co) platform.
 
 It inventories every AI tool a company uses, classifies each one against the **EU AI Act** (Annex III risk tiers), and generates a ready-to-adopt **compliance pack** — AI system inventory, risk classification with citations, an Article 4 staff-literacy plan, and a human-oversight & logging policy — in about 75 seconds.
 

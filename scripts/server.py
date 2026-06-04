@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Live demo server for the AI Act Co-Pilot.
+"""Live demo server for hawkEYE.
 
 Serves an interactive UI (web/index.html) and drives the multi-agent pipeline,
 streaming each step's start/finish to the browser via Server-Sent Events (SSE) so
@@ -140,8 +140,9 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         parsed = urllib.parse.urlparse(self.path)
-        if parsed.path == "/":
-            html = open(os.path.join(ROOT, "web", "index.html"), "rb").read()
+        if parsed.path in ("/", "/deck"):
+            fname = "deck.html" if parsed.path == "/deck" else "index.html"
+            html = open(os.path.join(ROOT, "web", fname), "rb").read()
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
             self.send_header("Content-Length", str(len(html)))
@@ -185,5 +186,5 @@ class Handler(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     demo.load_dotenv()
-    print(f"\n  AI Act Co-Pilot demo UI →  http://localhost:{PORT}\n  (Ctrl-C to stop)\n")
+    print(f"\n  hawkEYE demo UI →  http://localhost:{PORT}\n  (Ctrl-C to stop)\n")
     ThreadingHTTPServer(("0.0.0.0", PORT), Handler).serve_forever()

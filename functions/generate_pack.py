@@ -148,7 +148,7 @@ def _render_pack(company, surfaces, policy_md, training_md, evidence, national=N
 
     return f"""# EU AI Act Compliance Pack — {name}
 
-*Generated {today} by the AI Act Co-Pilot (Sinas). Draft for human review — not legal advice.*
+*Generated {today} by hawkEYE (Sinas). Draft for human review — not legal advice.*
 
 **Profile:** {size} · {sector}
 **Summary:** {len(surfaces)} AI surfaces — {counts['prohibited']} prohibited, {counts['high']} high-risk, {counts['limited']} limited-risk, {counts['minimal']} minimal-risk.
