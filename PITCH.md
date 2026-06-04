@@ -174,7 +174,7 @@ The jokes work because you *don't* laugh at them. Pause after punchlines — let
 >
 > Classify against a law. Ground in its verbatim text. Draft the controls.
 > Point the same pipeline at **GDPR. DORA. NIS2. CSRD.** Moonlit already holds the
-> corpora — 1.7 million documents, six jurisdictions. The AI Act was simply
+> corpora — 15 million documents, thirty-plus jurisdictions. The AI Act was simply
 > the law with the loudest deadline.
 >
 > *(slow, final)*
