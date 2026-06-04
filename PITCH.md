@@ -22,8 +22,8 @@ The jokes work because you *don't* laugh at them. Pause after punchlines — let
 >
 > So — lovely to be presenting at a crime scene.
 >
-> This is **hawkEYE** — and in the next five minutes, one fictional Dutch company
-> is going to become legally cleaner than anyone in this room.
+> In the next five minutes, one fictional Dutch company is going to become
+> legally cleaner than anyone in this room. *(don't name the product yet — slide 3 is the reveal)*
 
 **Delivery:** the show of hands is the whole slide. Don't rush the second question — the comedy is in the hands going down.
 
@@ -109,7 +109,7 @@ The jokes work because you *don't* laugh at them. Pause after punchlines — let
 > and four strictly worse versions of itself. Ask us in Q&A. It's a good story.
 
 **Delivery:** brisk — sweep your hand along the pipeline as the dots travel; the slide animates the flow for you. The footnote line is the laugh.
-**Timing note:** with this slide the deck runs ~5:30 at full script — if you must hit 5:00 hard, trim slide 2's option cards to one line each and cut demo steps 7–8.
+**Timing note:** at full script the deck runs ~5:45 — if you must hit 5:00 hard, trim slide 2's option cards to one line each and cut demo steps 7–8.
 
 ---
 
