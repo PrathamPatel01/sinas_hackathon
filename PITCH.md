@@ -1,5 +1,5 @@
 # Pitch script — hawkEYE
-*~5–6 minutes · 8 slides · 1 live demo. Deck: open `web/deck.html` in a browser (←/→ to advance, **N** for speaker notes, the countdown updates itself).*
+*~6 minutes · 9 slides · 1 live demo. Deck: open `web/deck.html` in a browser (←/→ to advance, **N** for speaker notes, the countdown updates itself).*
 
 **Tone:** deadpan, dry, confident. You're a lawyer presenting evidence, not a founder begging.
 The jokes work because you *don't* laugh at them. Pause after punchlines — let the room do the work.
@@ -146,7 +146,26 @@ The jokes work because you *don't* laugh at them. Pause after punchlines — let
 
 ---
 
-## SLIDE 7 — Closing argument (~35s)
+## SLIDE 7 — The business: "Two ways to pay." (~30s)
+
+> How does this make money? Two ways — three, if you count the fine.
+>
+> **B2C, one-time.** The panic purchase: you're fundraising, you're being audited,
+> August is coming. Run hawkEYE, €299, keep the pack, sleep again. TurboTax energy.
+>
+> **B2B, subscription — priced per active law module.** The AI Act is module one.
+> GDPR, DORA, NIS2 — every law Moonlit holds becomes a SKU. The subscription buys
+> *continuous* watching: your stack changes, the law changes, hawkEYE re-runs and
+> pings you before the regulator does.
+>
+> Go-to-market: start where the panic is — the deadline — and ride the channels SMEs
+> already trust: **accountants, insurers, VC platform teams.** Free scan in, modules out.
+
+**Delivery:** "three, if you count the fine" is the laugh — don't step on it. The module-as-SKU line tees up the vision slide perfectly.
+
+---
+
+## SLIDE 8 — Closing argument (~35s)
 
 > What you just saw: five agents on Sinas. Two layers of real law — EU and Dutch — fetched
 > live through Moonlit. A pack you can download as PDF. A chat that cites its sources.
@@ -166,7 +185,7 @@ The jokes work because you *don't* laugh at them. Pause after punchlines — let
 
 ---
 
-## SLIDE 8 — The vision: "one law down" (~25s)
+## SLIDE 9 — The vision: "one law down" (~25s)
 
 > And here's the real pitch: **nothing in those four moves is AI-Act-specific.**
 >
@@ -182,7 +201,7 @@ The jokes work because you *don't* laugh at them. Pause after punchlines — let
 > **hawkEYE — every law, with receipts.** Thank you.
 
 **Delivery:** the zoom-out. Slide 7 was the mic-drop for *this* product; this is the "and it's a platform" beat investors/juries score on. End on the tagline, not on "questions?".
-**Timing note:** full script now runs ~6:10 — if the slot is a hard 5:00, cut slide 2's option cards to one line each, demo steps 7–8, and compress slides 4+5 into one breath.
+**Timing note:** full script now runs ~6:40 — if the slot is a hard 5:00, cut slide 2's option cards to one line each, demo steps 7–8, and compress slides 4+5 into one breath.
 
 ---
 
